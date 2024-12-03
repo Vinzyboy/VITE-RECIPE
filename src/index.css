@@ -6,7 +6,7 @@
 :root {
   --myred: 227, 24, 55;
   --myyellow: 215, 168, 58;
-  --accent: 228, 10, 19;
+  --accent: 26, 54, 54;
   --light: 255, 255, 255;
   --dark: 54, 54, 54;
   --orange: 244, 173, 76;
@@ -23,7 +23,7 @@
 .dark {
   --myred: 227, 24, 55;
   --myyellow: 215, 168, 58;
-  --accent: 228, 10, 19;
+  --accent: 26, 54, 54;
   --light: 64, 64, 64;
   --primary: 13, 17, 23;
   --secondary: 1, 4, 9;
@@ -41,7 +41,7 @@
     @apply h-full;
   }
   body {
-    @apply text-body font-['Nunito'] leading-tight overflow-x-hidden;
+    @apply text-body font-['Nunito'] leading-relaxed overflow-x-hidden;
   }
   h1,
   h2,
@@ -72,7 +72,7 @@
 
 @layer components {
   .container {
-    @apply max-w-[1700px] mx-auto px-4;
+    @apply max-w-[1200px] mx-auto px-4 w-full;
   }
 
   .btn {
@@ -174,7 +174,7 @@
   .input-wrap input,
   .input-wrap textarea,
   .input-wrap select {
-    @apply px-2 py-1 w-full outline-none border border-line bg-primary text-body rounded-md focus:border-info;
+    @apply px-2 py-1 w-full outline-none border border-line bg-primary text-body rounded-md focus:border-info min-h-[33px];
   }
 
   .input-wrap input:disabled,
@@ -206,6 +206,13 @@
   .input-photo-wrap span.error-show {
     @apply -top-4;
   }
+
+  .wrapper-instruction h5{
+    @apply mb-4 py-1 border-b border-gray-600 text-lg border-opacity-30;
+  }
+  .wrapper-instruction p{
+    @apply mb-5;
+  }
 }
 
 @layer utilities {
@@ -227,8 +234,8 @@
 /* Handle on hover */
 .custom-scroll::-webkit-scrollbar-thumb:hover {
   background: hsl(42, 66%, 44%);
+  cursor: grab;
 }
-
 
 .spinner circle {
   fill: none;
@@ -252,4 +259,44 @@
   100% {
     stroke-dashoffset: -110px;
   }
+}
+
+.grid-name-0,
+.grid-name-top-0 {
+  grid-area: a;
+}
+.grid-name-1,
+.grid-name-top-1 {
+  grid-area: b;
+}
+.grid-name-2,
+.grid-name-top-2 {
+  grid-area: c;
+}
+.grid-name-3,
+.grid-name-top-3 {
+  grid-area: d;
+}
+.grid-name-4,
+.grid-name-top-4 {
+  grid-area: e;
+}
+.grid-name-5,
+.grid-name-top-5 {
+  grid-area: f;
+}
+
+.grid-container {
+  grid-template-areas:
+    "a a b"
+    "a a c"
+    "d e f";
+}
+
+.grid-container-top {
+  min-height: 1200px;
+  grid-template-areas:
+    "a c f"
+    "a d f"
+    "b d e";
 }
