@@ -12,7 +12,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 
-const BannerSlider = () => {
+const BannerSlider = ({ result }) => {
   const settings = {
     infinite: true,
     speed: 500,
@@ -23,37 +23,35 @@ const BannerSlider = () => {
   return (
     <section>
       <Slider {...settings}>
-        {Array.from(Array(6).keys()).map((key) => (
+        {result?.data.map((item, key) => (
           <div className="w-full md:h-[calc(100vh-82px)] relative" key={key}>
             <img
-              src={`${imgPath}/slider-2.webp`}
+              src={`${imgPath}/${item.recipe_image}`}
               alt=""
               className="md:w-full md:h-[105%] object-cover"
             />
-            <div className="tint w-full h-[105%] bg-black bg-opacity-40 absolute top-0 left-0"></div>
+            <div className="tint w-full md:h-[105%] h-[100%] bg-black bg-opacity-40 absolute top-0 left-0"></div>
             <div className="absolute md:top-1/2 md:left-[calc((100vw-1200px)/2)] p-4 text-white max-w-[500px] md:-translate-y-1/2 top-0">
-              <h3 className="md:text-5xl text-xl">Salmon Sarap</h3>
+              <h3 className="md:text-5xl text-xl">{item.recipe_title}</h3>
               <ul className="flex gap-5 mb-5">
                 <li className="flex gap-2 items-center text-xs md:text-base">
                   <Clock />
-                  30mins
+                  {item.recipe_prep_time}
                 </li>
                 <li className="flex gap-2 items-center text-xs md:text-base">
-                  <Utensils />2 Servings
+                  <Utensils />
+                  {item.recipe_serving} Servings
                 </li>
                 <li className="flex gap-2 items-center text-xs md:text-base">
                   <HandPlatter />
-                  Fish
+                  {item.recipe_category}
                 </li>
               </ul>
               <p className="mb-5 text-xs md:text-base">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic
-                placeat fuga nam ducimus eveniet vitae omnis? Vitae suscipit
-                deleniti nostrum laborum molestias iusto officiis temporibus?
-                Doloribus esse corporis natus impedit?
+                {item.recipe_description}
               </p>
               <Link
-                to="/"
+                to={`/recipe/single/${item.recipe_title.replaceAll(" ", " ")}`}
                 className="flex items-center gap-3 group hover:text-accent transition-all font-bold text-xs md:text-base"
               >
                 View Full Recipe

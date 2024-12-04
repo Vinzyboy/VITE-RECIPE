@@ -7,7 +7,7 @@ class Recipe
     public $recipe_level;
     public $recipe_serving;
     public $recipe_prep_time;
-    public $recipe_image;
+     public $recipe_image;
     public $recipe_ingredients;
     public $recipe_description;
     public $recipe_instruction;
@@ -25,7 +25,7 @@ class Recipe
     public function __construct($db)
     {
         $this->connection = $db;
-        $this->tblrecipe = "recipes";
+        $this->tblrecipe = "recipe";
     }
 
     // create
