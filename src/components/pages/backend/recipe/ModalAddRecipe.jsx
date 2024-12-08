@@ -80,7 +80,10 @@ const ModalAddRecipe = ({ itemEdit }) => {
 
   return (
     <ModalWrapper>
-      <div className="modal-main bg-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[1300px] w-full rounded-md border border-line">
+      <div
+        className="modal-main bg-primary absolute top-1/2 left-1/2 -translate-x-1/2 
+      -translate-y-1/2 max-w-[1300px] w-full rounded-md border border-line"
+      >
         <div className="modal-header flex gap-2 p-2 items-center border-b border-line mb-2 ">
           <span className="text-body">Add Recipe</span>
           <button className="ml-auto" onClick={handleClose}>
