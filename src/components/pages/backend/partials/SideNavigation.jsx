@@ -1,5 +1,7 @@
 import { imgPath } from "@/components/helpers/functions-general";
 import {
+  AlignJustify,
+  CircleFadingArrowUp,
   Clapperboard,
   LayoutDashboard,
   Megaphone,
@@ -11,14 +13,19 @@ import { NavLink } from "react-router-dom";
 const SideNavigation = ({ menu }) => {
   const links = [
     {
-      title: "Dashboard",
-      slug: "/admin/dashboard",
-      icon: <LayoutDashboard size={17} />,
-    },
-    {
       title: "Recipe",
       slug: "/admin/recipe",
       icon: <UtensilsCrossed size={17} />,
+    },
+    {
+      title: "Category",
+      slug: "/admin/category",
+      icon: <AlignJustify size={17} />,
+    },
+    {
+      title: "Level",
+      slug: "/admin/level",
+      icon: <CircleFadingArrowUp size={17} />,
     },
   ];
   return (
