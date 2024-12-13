@@ -49,6 +49,7 @@ const LevelTable = ({ setItemEdit }) => {
   };
 
   const {
+    isLoading,
     isFetching,
     error,
     data: result,
@@ -63,7 +64,7 @@ const LevelTable = ({ setItemEdit }) => {
   return (
     <>
       <div className="p-4 bg-secondary rounded-md mt-10 border border-line relative">
-        {/* <SpinnerTable /> */}
+        {!isLoading || (isFetching && <SpinnerTable />)}
         <div className="table-wrapper custom-scroll">
           {/* <TableLoader count={40} cols={10} /> */}
           <table>
@@ -77,16 +78,25 @@ const LevelTable = ({ setItemEdit }) => {
             </thead>
 
             <tbody>
-              {/* <tr>
-                        <td colSpan={100}>
-                          <IconNoData />
-                        </td>
-                      </tr>
-               <tr>
-                        <td colSpan={100}>
-                          <IconServerError />
-                        </td>
-                      </tr>  */}
+              {((isLoading && !isFetching) || result?.data.length === 0) && (
+                <tr>
+                  <td colSpan="100%">
+                    {isLoading ? (
+                      <TableLoader count={30} cols={6} />
+                    ) : (
+                      <IconNoData />
+                    )}
+                  </td>
+                </tr>
+              )}
+
+              {error && (
+                <tr>
+                  <td colSpan="100%">
+                    <IconServerError />
+                  </td>
+                </tr>
+              )}
               {result?.count > 0 &&
                 result.data.map((item, key) => (
                   <tr key={key}>

@@ -1,6 +1,5 @@
 import React from "react";
 import TableLoader from "../partials/TableLoader";
-import Pills from "../partials/Pills";
 import {
   Archive,
   ArchiveRestore,
@@ -16,56 +15,52 @@ import { StoreContext } from "@/components/store/storeContext";
 import {
   setIsAdd,
   setIsArchive,
-  setIsConfirm,
   setIsDelete,
-  setIsEdit,
   setIsRestore,
 } from "@/components/store/storeAction";
 import ModalDelete from "../partials/modals/ModalDelete";
-import ModalConfirm from "../partials/modals/ModalConfirm";
 import useQueryData from "@/components/custom-hook/useQueryData";
 import ModalArchive from "@/components/partials/modal/ModalArchive";
 import ModalRestore from "@/components/partials/modal/ModalRestore";
+import Status from "@/components/partials/Status";
 
 const RecipeTable = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [isActive, setIsActive] = React.useState(0);
-  const [id, setId] = React.useState(null);
-  const {
-    isLoading,
-    isFetching,
-    error,
-    data: result,
-  } = useQueryData(
-    `/v2/recipe`, // endpoint   
-    "get", // method
-    "recipe"
-  );
-
-  let counter = 1;
+  const [id, setIsId] = React.useState(null);
 
   const handleAdd = (item) => {
     dispatch(setIsAdd(true));
     setItemEdit(item);
   };
   const handleEdit = (item) => {
-    dispatch(setIsAdd(true));
-    setItemEdit(item);
-  };
-  const handleDelete = (item) => {
-    dispatch(setIsDelete(true));
-    setId(item.recipe_aid);
-  };
-  const handleRestore = (item) => {
-    dispatch(setIsRestore(true));
-    setIsActive(1);
-    setId(item.recipe_aid);
-  };
-  const handleArchive = (item) => {
-    dispatch(setIsArchive(true));
-    setIsActive(0);
-    setId(item.recipe_aid);
-  };
+      dispatch(setIsAdd(true));
+      setItemEdit(item);
+    };
+    const handleDelete = (item) => {
+      dispatch(setIsDelete(true));
+      setIsId(item.recipe_aid);
+    };
+    const handleRestore = (item) => {
+      dispatch(setIsRestore(true));
+      setIsId(item.recipe_aid);
+    };
+    const handleArchive = (item) => {
+      dispatch(setIsArchive(true));
+      setIsId(item.recipe_aid);
+    };
+
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: result,
+  } = useQueryData(
+    `/v2/recipe`, // endpoint
+    "get", // method
+    "recipe"
+  );
+
+  let counter = 1;
   return (
     <>
       <div className="p-4 bg-secondary rounded-md mt-10 border border-line relative">
@@ -104,12 +99,16 @@ const RecipeTable = ({ setItemEdit }) => {
                   </td>
                 </tr>
               )}
-              {result?.data.map((item, key) => {
-                return (
+              {result?.count > 0 &&
+                result.data.map((item, key) => (
                   <tr key={key}>
                     <td>{counter++}.</td>
                     <td>
-                      <Pills isActive={item.recipe_is_active} />
+                      {item.recipe_is_active === 1 ? (
+                        <Status text="Active" />
+                      ) : (
+                        <Status text="Inactive" />
+                      )}
                     </td>
                     <td>{item.recipe_title}</td>
                     <td className="capitalize">{item.recipe_category}</td>
@@ -164,8 +163,7 @@ const RecipeTable = ({ setItemEdit }) => {
                       </ul>
                     </td>
                   </tr>
-                );
-              })}
+                ))}
             </tbody>
           </table>
 
