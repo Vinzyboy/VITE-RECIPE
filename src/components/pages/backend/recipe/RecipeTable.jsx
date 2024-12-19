@@ -33,21 +33,21 @@ const RecipeTable = ({ setItemEdit }) => {
     setItemEdit(item);
   };
   const handleEdit = (item) => {
-      dispatch(setIsAdd(true));
-      setItemEdit(item);
-    };
-    const handleDelete = (item) => {
-      dispatch(setIsDelete(true));
-      setIsId(item.recipe_aid);
-    };
-    const handleRestore = (item) => {
-      dispatch(setIsRestore(true));
-      setIsId(item.recipe_aid);
-    };
-    const handleArchive = (item) => {
-      dispatch(setIsArchive(true));
-      setIsId(item.recipe_aid);
-    };
+    dispatch(setIsAdd(true));
+    setItemEdit(item);
+  };
+  const handleDelete = (item) => {
+    dispatch(setIsDelete(true));
+    setIsId(item.recipe_aid);
+  };
+  const handleRestore = (item) => {
+    dispatch(setIsRestore(true));
+    setIsId(item.recipe_aid);
+  };
+  const handleArchive = (item) => {
+    dispatch(setIsArchive(true));
+    setIsId(item.recipe_aid);
+  };
 
   const {
     isLoading,
@@ -111,8 +111,8 @@ const RecipeTable = ({ setItemEdit }) => {
                       )}
                     </td>
                     <td>{item.recipe_title}</td>
-                    <td className="capitalize">{item.recipe_category}</td>
-                    <td className="capitalize">{item.recipe_level}</td>
+                    <td className="capitalize">{item.category_title}</td>
+                    <td className="capitalize">{item.level_title}</td>
 
                     <td>
                       <ul className="table-action">

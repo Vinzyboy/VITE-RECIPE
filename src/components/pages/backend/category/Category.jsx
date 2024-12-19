@@ -8,7 +8,6 @@ import { StoreContext } from "@/components/store/storeContext";
 import { setIsAdd } from "@/components/store/storeAction";
 import ModalValidation from "../partials/modals/ModalValidation";
 import ModalError from "../partials/modals/ModalError";
-
 import CategoryTable from "./CategoryTable";
 import ModalAddCategory from "./ModalAddCategory";
 import ToastSuccess from "../partials/ToastSuccess";
@@ -27,17 +26,19 @@ const Category = () => {
         <div className="layout-division ">
           <SideNavigation menu="category" />
           <main>
-            <Header title="Category" subtitle="Manage Kiosk Category" />
+            <Header title="Category" subtitle="Manage Recipe Category" />
             <div className="p-8">
               <div className="flex justify-between items-center">
-                <Searchbar />
-
+                <div></div>
                 <button className="btn btn-add" onClick={handleAdd}>
                   <Plus size={16} /> Add New
                 </button>
               </div>
 
-              <CategoryTable setIsCategoryEdit={setIsCategoryEdit} />
+              <CategoryTable
+                isCategoryEdit={isCategoryEdit}
+                setIsCategoryEdit={setIsCategoryEdit}
+              />
             </div>
 
             <Footer />
@@ -47,7 +48,12 @@ const Category = () => {
       {store.validate && <ModalValidation />}
       {store.error && <ModalError />}
       {store.success && <ToastSuccess />}
-      {store.isAdd && <ModalAddCategory isCategoryEdit={isCategoryEdit} />}
+      {store.isAdd && (
+        <ModalAddCategory
+          isCategoryEdit={isCategoryEdit}
+          setIsCategoryEdit={setIsCategoryEdit}
+        />
+      )}
     </>
   );
 };

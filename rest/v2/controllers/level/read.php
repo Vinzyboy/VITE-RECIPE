@@ -2,8 +2,8 @@
 $conn = null;
 $conn = checkDbConnection();
 $level = new Level($conn);
-// $error = [];
-// $returnData = [];
+$error = [];
+$returnData = [];
 if (array_key_exists("levelid", $_GET)) {
     $level->level_aid = $_GET['levelid'];
     checkId($level->level_aid);

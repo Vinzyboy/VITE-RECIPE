@@ -30,24 +30,22 @@ const ModalAddLevel = ({ itemEdit }) => {
   const handleChange = (event) => {
     setValue(event.target.value);
   };
-//   const {
-//     isLoading,
-//     isFetching,
-//     error,
-//     data: results,
-//   } = useQueryData(
-//     `/v2/level`, // endpoint
-//     "get", // method
-//     "level" // key
-//   );
+  //   const {
+  //     isLoading,
+  //     isFetching,
+  //     error,
+  //     data: results,
+  //   } = useQueryData(
+  //     `/v2/level`, // endpoint
+  //     "get", // method
+  //     "level" // key
+  //   );
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
-          itemEdit
-              ? `/v2/level/${itemEdit.level_aid}`
-              : "/v2/level",
+        itemEdit ? `/v2/level/${itemEdit.level_aid}` : "/v2/level",
         itemEdit ? "PUT" : "POST",
         values
       ),
@@ -70,6 +68,7 @@ const ModalAddLevel = ({ itemEdit }) => {
   });
   const initVal = {
     level_title: itemEdit ? itemEdit.level_title : "",
+    level_title_old: itemEdit ? itemEdit.level_title : "",
   };
   const yupSchema = Yup.object({
     level_title: Yup.string().required("Required"),

@@ -9,6 +9,7 @@ require '../../models/category/Category.php';
 
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
+
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
 

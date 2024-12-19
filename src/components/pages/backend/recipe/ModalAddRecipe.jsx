@@ -198,13 +198,13 @@ const ModalAddRecipe = ({ itemEdit }) => {
                           <option value="hidden"></option>
                           {categ?.data.map((item, key) => {
                             return (
-                              <>
+                              <React.Fragment key={key}>
                                 {item.category_is_active === 1 && (
-                                  <option key={key} value={item.category_aid}>
+                                  <option value={item.category_aid}>
                                     {item.category_title}
                                   </option>
                                 )}
-                              </>
+                              </React.Fragment>
                             );
                           })}
                         </InputSelect>
@@ -218,13 +218,13 @@ const ModalAddRecipe = ({ itemEdit }) => {
                           <option value="hidden"></option>
                           {lev?.data.map((item, key) => {
                             return (
-                              <>
+                              <React.Fragment key={key}>
                                 {item.level_is_active === 1 && (
-                                  <option key={key} value={item.level_aid}>
+                                  <option value={item.level_aid}>
                                     {item.level_title}
                                   </option>
                                 )}
-                              </>
+                              </React.Fragment>
                             );
                           })}
                         </InputSelect>

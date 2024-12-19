@@ -13,6 +13,11 @@ import { NavLink } from "react-router-dom";
 const SideNavigation = ({ menu }) => {
   const links = [
     {
+      title: "Dashboard",
+      slug: "/admin/dashboard",
+      icon: <UtensilsCrossed size={17} />,
+    },
+    {
       title: "Recipe",
       slug: "/admin/recipe",
       icon: <UtensilsCrossed size={17} />,

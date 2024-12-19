@@ -20,33 +20,6 @@ class Level
         $this->tbllevel = "level";
     }
 
-    // create
-   public function create()
-    {
-        try {
-            $sql = "insert into {$this->tbllevel} ";
-            $sql .= "( level_title, ";
-            $sql .= "level_is_active, ";
-            $sql .= "level_datetime, ";
-            $sql .= "level_created ) values ( ";
-            $sql .= ":level_title, ";
-            $sql .= ":level_is_active, ";
-            $sql .= ":level_datetime, ";
-            $sql .= ":level_created ) ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "level_title" => $this->level_title,
-                "level_is_active" => $this->level_is_active,
-                "level_datetime" => $this->level_datetime,
-                "level_created" => $this->level_created,
-            ]);
-            $this->lastInsertedId = $this->connection->lastInsertId();
-        } catch (PDOException $ex) {
-            $query = false;
-        }
-        return $query;
-    }
-
     // read all
     public function readAll()
     {
@@ -82,14 +55,52 @@ class Level
     }
 
 
+
     public function search()
     {
         try {
             $sql = "select * from {$this->tbllevel} ";
             $sql .= "where level_title like :level_title ";
-            $sql .= "order by level_is_active desc ";
+            $sql .= "order by level_is_active desc, ";
+            $sql .= "level_title ";
             $query = $this->connection->prepare($sql);
             $query->execute([
+                "level_title" => "%{$this->level_search}%",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function filterActive()
+    {
+        try {
+            $sql = "select * from {$this->tbllevel} ";
+            $sql .= "where level_is_active = :level_is_active ";
+            $sql .= "order by level_is_active desc, ";
+            $sql .= "level_is_active ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "level_is_active" => $this->level_is_active,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function filterActiveSearch()
+    {
+        try {
+            $sql = "select * from {$this->tbllevel} ";
+            $sql .= "where level_is_active = :level_is_active ";
+            $sql .= "and level_title like :level_title ";
+            $sql .= "order by level_is_active desc, ";
+            $sql .= "level_title ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "level_is_active" => $this->level_is_active,
                 "level_title" => "%{$this->level_search}%",
             ]);
         } catch (PDOException $ex) {
@@ -116,55 +127,43 @@ class Level
         return $query;
     }
 
-  // update
-    public function update()
-    {
-        try {
-            $sql = "update {$this->tbllevel} set ";
-            $sql .= "level_title = :level_title, ";
-            $sql .= "level_datetime = :level_datetime ";
-            $sql .= "where level_aid = :level_aid ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "level_title" => $this->level_title,            
-                "level_datetime" => $this->level_datetime,
-                "level_aid" => $this->level_aid,
-            ]);
-        } catch (PDOException $ex) {
-            $query = false;
-        }
-        return $query;
-    }
 
-    // active
-    public function active()
+    // create
+    public function create()
     {
         try {
-            $sql = "update {$this->tbllevel} set ";
-            $sql .= "level_is_active = :level_is_active, ";
-            $sql .= "level_datetime = :level_datetime ";
-            $sql .= "where level_aid = :level_aid ";
+            $sql = "insert into {$this->tbllevel} ";
+            $sql .= "( level_title, ";
+            $sql .= "level_is_active, ";
+            $sql .= "level_datetime, ";
+            $sql .= "level_created ) values ( ";
+            $sql .= ":level_title, ";
+            $sql .= ":level_is_active, ";
+            $sql .= ":level_datetime, ";
+            $sql .= ":level_created ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
+                "level_title" => $this->level_title,
                 "level_is_active" => $this->level_is_active,
                 "level_datetime" => $this->level_datetime,
-                "level_aid" => $this->level_aid,
+                "level_created" => $this->level_created,
             ]);
+            $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
             $query = false;
         }
         return $query;
     }
 
-    // delete
-    public function delete()
+
+    public function checkAssociation()
     {
         try {
-            $sql = "delete from {$this->tbllevel} ";
-            $sql .= "where level_aid = :level_aid  ";
+            $sql = "select level_aid from {$this->tbllevel} ";
+            $sql .= "where level_aid = :level_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "level_aid" => $this->level_aid,
+                "level_aid" => "{$this->level_aid}",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -188,15 +187,77 @@ class Level
         return $query;
     }
 
-    // // name
-    // public function checkAssociation()
+
+    // update
+    public function update()
+    {
+        try {
+            $sql = "update {$this->tbllevel} set ";
+            $sql .= "level_title = :level_title, ";
+            $sql .= "level_datetime = :level_datetime ";
+            $sql .= "where level_aid = :level_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "level_title" => $this->level_title,
+                "level_datetime" => $this->level_datetime,
+                "level_aid" => $this->level_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    // delete
+    public function delete()
+    {
+        try {
+            $sql = "delete from {$this->tbllevel} ";
+            $sql .= "where level_aid = :level_aid  ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "level_aid" => $this->level_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+    // active
+    public function active()
+    {
+        try {
+            $sql = "update {$this->tbllevel} set ";
+            $sql .= "level_is_active = :level_is_active, ";
+            $sql .= "level_datetime = :level_datetime ";
+            $sql .= "where level_aid = :level_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "level_is_active" => $this->level_is_active,
+                "level_datetime" => $this->level_datetime,
+                "level_aid" => $this->level_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+
+
+
+
+    // public function filterByStatus()
     // {
     //     try {
-    //         $sql = "select product_level_id from {$this->tbllevel} ";
-    //         $sql .= "where product_level_id = :product_level_id ";
+    //         $sql = "select * ";
+    //         $sql .= "from {$this->tbllevel} ";
+    //         $sql .= "where level_is_active = :level_is_active  ";
+    //         $sql .= "order by level_is_active desc ";
     //         $query = $this->connection->prepare($sql);
     //         $query->execute([
-    //             "product_level_id" => $this->level_aid,
+    //             "level_is_active" => $this->level_is_active,
     //         ]);
     //     } catch (PDOException $ex) {
     //         $query = false;
@@ -204,42 +265,24 @@ class Level
     //     return $query;
     // }
 
-
-    public function filterByStatus()
-    {
-        try {
-            $sql = "select * ";
-            $sql .= "from {$this->tbllevel} ";
-            $sql .= "where level_is_active = :level_is_active  ";
-            $sql .= "order by level_is_active desc ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "level_is_active" => $this->level_is_active,
-            ]);
-        } catch (PDOException $ex) {
-            $query = false;
-        }
-        return $query;
-    }
-
-    public function filterByStatusAndSearch()
-    {
-        try {
-            $sql = "select * ";
-            $sql .= "from {$this->tbllevel} ";
-            $sql .= "where ";
-            $sql .= "level_is_active = :level_is_active ";
-            $sql .= "and level_title like :level_title ";
-            $sql .= "order by level_is_active desc, ";
-            $sql .= "level_title asc ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "level_title" => "%{$this->level_search}%",
-                "level_is_active" => $this->level_is_active,
-            ]);
-        } catch (PDOException $ex) {
-            $query = false;
-        }
-        return $query;
-    }
+    // public function filterByStatusAndSearch()
+    // {
+    //     try {
+    //         $sql = "select * ";
+    //         $sql .= "from {$this->tbllevel} ";
+    //         $sql .= "where ";
+    //         $sql .= "level_is_active = :level_is_active ";
+    //         $sql .= "and level_title like :level_title ";
+    //         $sql .= "order by level_is_active desc, ";
+    //         $sql .= "level_title asc ";
+    //         $query = $this->connection->prepare($sql);
+    //         $query->execute([
+    //             "level_title" => "%{$this->level_search}%",
+    //             "level_is_active" => $this->level_is_active,
+    //         ]);
+    //     } catch (PDOException $ex) {
+    //         $query = false;
+    //     }
+    //     return $query;
+    // }
 }
