@@ -1,62 +1,40 @@
-export const getFoodByCategory = (categoryId, dataFood) => {
-  let result = [];
-  let resultCategoryId = [];
-
-  dataFood?.data.map((item) => {
-    if (Number(categoryId) === Number(item.category_aid)) {
-      result.push(item);
-    }
-  });
-  return result;
+export const getFoodByCategory = (categoryId, dataRecipe) => {
+  return (
+    dataRecipe?.data.filter(
+      (item) => Number(categoryId) === Number(item.category_aid)
+    ) || []
+  );
 };
 
-export const getCategoryPrices = (dataCategory, dataFood) => {
-  let result = [];
-  let resultCategoryId = [];
+export const getLevelRecipe = (dataCategory, dataRecipe) => {
+  if (!dataCategory?.data || !dataRecipe?.data) return [];
 
-  dataCategory?.data.map((categoryItem) => {
-    let isResultCategoryExist = false;
+  const levelCounts = (recipeItems) => {
+    const levels = { easy: 0, normal: 0, hard: 0 };
 
-    dataFood?.data.map((foodItem) => {
-      // BOOLEAN CHECK IF CATEGORY EXIST IN RESULT CATEGORY ARRAY
-      isResultCategoryExist = resultCategoryId.includes(
-        Number(categoryItem.category_aid)
-      );
-
-      // GET INDEX OF EXISTING CATEGORY
-      const getIndexCategoryItem = resultCategoryId.indexOf(
-        foodItem.food_category_id
-      );
-
-      // IF CATEGORY NOT EXIST ADD CATEGORY WITH PRICE
-      if (
-        Number(categoryItem.category_aid) ===
-          Number(foodItem.food_category_id) &&
-        isResultCategoryExist === false
-      ) {
-        resultCategoryId.push(categoryItem.category_aid);
-        result.push({
-          ...categoryItem,
-          menu_price: Number(foodItem.food_price),
-        });
-      }
-
-      // IF CATEGORY EXIST ADD MENU PRICE TO CATEGORY
-      if (
-        Number(categoryItem.category_aid) ===
-          Number(foodItem.food_category_id) &&
-        isResultCategoryExist === true &&
-        getIndexCategoryItem >= 0
-      ) {
-        result[getIndexCategoryItem].menu_price += Number(foodItem.food_price);
-      }
+    recipeItems.forEach((recipe) => {
+      if (recipe.level_title === "easy") levels.easy++;
+      else if (recipe.level_title === "normal") levels.normal++;
+      else if (recipe.level_title === "hard") levels.hard++;
     });
 
-    if (!isResultCategoryExist) {
-      result.push({ ...categoryItem, menu_price: 0 });
-      resultCategoryId.push(categoryItem.category_aid);
-    }
-  });
+    return levels;
+  };
 
-  return result;
+  return dataCategory.data.map((categoryItem) => {
+    const recipeItems = dataRecipe.data.filter(
+      (recipe) => recipe.recipe_category_id === categoryItem.category_aid
+    );
+
+    const { easy, normal, hard } = levelCounts(recipeItems);
+
+    return {
+      category_title: categoryItem.category_title,
+      category_aid: categoryItem.category_aid,
+      easy,
+      normal,
+      hard,
+    };
+  });
 };
+

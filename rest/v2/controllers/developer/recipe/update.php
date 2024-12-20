@@ -21,7 +21,7 @@ if (array_key_exists("recipeid", $_GET)) {
 
     $recipe->recipe_datetime = date("Y-m-d H:i:s");
     $recipe_title_old = strtolower($data["recipe_title_old"]);
-    // checkId($recipe->recipe_aid);
+    checkId($recipe->recipe_aid);
     compareName($recipe, $recipe_title_old, $recipe->recipe_title);
 
     $query = checkUpdate($recipe);

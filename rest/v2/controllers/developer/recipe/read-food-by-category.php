@@ -3,9 +3,11 @@
 require '../../../core/header.php';
 // use needed functions
 require '../../../core/functions.php';
-require 'functions.php';
 // use needed classes
 require '../../../models/developer/Recipe.php';
+require 'functions.php';
+// use needed classes
+
 
 
 // check database connection
@@ -19,28 +21,21 @@ $body = file_get_contents("php://input");
 $data = json_decode($body, true);
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
-    checkApiKey();
-    checkPayload($data);
+  checkApiKey();
+  checkPayload($data);
 
-    $recipe->recipe_search = $data['searchValue'];
-
+  if ($data['categoryId'] != '') {
+    $recipe->recipe_category_id = $data['categoryId'];
+    $query = checkReadAllByCategoryId($recipe);
     http_response_code(200);
-    if ($data['isFilter']) {
-        $recipe->recipe_is_active = checkIndex($data, 'statusFilter');
-        if ($recipe->recipe_search != '') {
-            $query = checkFilterActiveSearch($recipe);
-            getQueriedData(($query));
-        }
-        $query = checkFilterActive($recipe);
-        getQueriedData(($query));
-    }
+    getQueriedData($query);
+  }
 
-
-    $query = checkSearch($recipe);
-    http_response_code(200);
-    getQueriedData(($query));
-    // return 404 error if endpoint not available
-    checkEndpoint();
+  $query = checkReadAll($recipe);
+  http_response_code(200);
+  getQueriedData($query);
+  // return 404 error if endpoint not available
+  checkEndpoint();
 }
 
 http_response_code(200);

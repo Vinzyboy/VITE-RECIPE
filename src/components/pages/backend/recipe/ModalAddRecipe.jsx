@@ -195,7 +195,7 @@ const ModalAddRecipe = ({ itemEdit }) => {
                           name="recipe_category_id"
                           onChange={handleChange}
                         >
-                          <option value="hidden"></option>
+                          <option value="" hidden></option>
                           {categ?.data.map((item, key) => {
                             return (
                               <React.Fragment key={key}>
@@ -215,7 +215,7 @@ const ModalAddRecipe = ({ itemEdit }) => {
                           name="recipe_level_id"
                           onChange={handleChange}
                         >
-                          <option value="hidden"></option>
+                          <option value="" hidden></option>
                           {lev?.data.map((item, key) => {
                             return (
                               <React.Fragment key={key}>
